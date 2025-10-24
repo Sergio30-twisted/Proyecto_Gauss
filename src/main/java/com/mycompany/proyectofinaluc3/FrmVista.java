@@ -1,9 +1,15 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package com.mycompany.proyectofinaluc3;
 
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 /**
  *
  * @author Sergio Aboytia
@@ -17,8 +23,17 @@ public class FrmVista extends javax.swing.JFrame {
      */
     public FrmVista() {
         initComponents();
+        btnSeidel.setText("Calcular");
+        btnSeidel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSeidelActionPerformed(evt);
+            }
+        });
     }
 
+    private javax.swing.JTextField[][] tfA;
+    private javax.swing.JTextField[] tfB;
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -48,7 +63,8 @@ public class FrmVista extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblJordan = new javax.swing.JTable();
+        btnCalcularJordan = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -69,7 +85,18 @@ public class FrmVista extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         btnCalcular1 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tblGauss = new javax.swing.JTable();
+        jPanel5 = new javax.swing.JPanel();
+        jPanel7 = new javax.swing.JPanel();
+        btnSeidel = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        btnCrear = new javax.swing.JButton();
+        lblSize = new javax.swing.JLabel();
+        spnSize = new javax.swing.JSpinner();
+        pnlInputs = new javax.swing.JPanel();
+        scrlInputs = new javax.swing.JScrollPane();
+        pnlInputss = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -105,7 +132,7 @@ public class FrmVista extends javax.swing.JFrame {
 
         jLabel8.setText("=");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblJordan.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -113,10 +140,25 @@ public class FrmVista extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "X1", "X2", "X3", "B"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tblJordan);
+
+        btnCalcularJordan.setText("Calcular");
+        btnCalcularJordan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCalcularJordanActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -129,39 +171,40 @@ public class FrmVista extends javax.swing.JFrame {
                         .addComponent(jLabel5))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField21, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
-                            .addComponent(jTextField17, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextField13, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField18)
-                            .addComponent(jTextField14)
-                            .addComponent(jTextField22))
-                        .addGap(12, 12, 12)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextField19)
-                                    .addComponent(jTextField23))
-                                .addGap(18, 18, 18)
+                                    .addComponent(jTextField21, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
+                                    .addComponent(jTextField17, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jTextField13, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jTextField18)
+                                    .addComponent(jTextField14)
+                                    .addComponent(jTextField22))
+                                .addGap(12, 12, 12)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel8)
-                                    .addComponent(jLabel7))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField20, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(jTextField15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel6)
-                                .addGap(18, 18, 18)
-                                .addComponent(jTextField16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(154, Short.MAX_VALUE))
+                                    .addGroup(jPanel4Layout.createSequentialGroup()
+                                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jTextField19)
+                                            .addComponent(jTextField23))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel8)
+                                            .addComponent(jLabel7))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jTextField20, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jTextField24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(jPanel4Layout.createSequentialGroup()
+                                        .addComponent(jTextField15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel6)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jTextField16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(btnCalcularJordan)))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(365, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -189,9 +232,11 @@ public class FrmVista extends javax.swing.JFrame {
                     .addComponent(jTextField23, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
+                .addComponent(btnCalcularJordan)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(227, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -247,8 +292,13 @@ public class FrmVista extends javax.swing.JFrame {
         jLabel4.setText("=");
 
         btnCalcular1.setText("Calcular");
+        btnCalcular1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCalcular1ActionPerformed(evt);
+            }
+        });
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tblGauss.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -256,10 +306,18 @@ public class FrmVista extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "X1", "X2", "X3", "B"
             }
-        ));
-        jScrollPane2.setViewportView(jTable2);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(tblGauss);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -273,30 +331,33 @@ public class FrmVista extends javax.swing.JFrame {
                             .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(22, 22, 22)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(24, 24, 24)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField11)
-                            .addComponent(jTextField7)
-                            .addComponent(jTextField3))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel4))
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel2)))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(18, 18, 18)
-                                .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(18, 18, 18)
-                                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(137, 137, 137)
                         .addComponent(jLabel1))
@@ -306,7 +367,7 @@ public class FrmVista extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(160, Short.MAX_VALUE))
+                .addContainerGap(371, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -356,6 +417,131 @@ public class FrmVista extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Métodod de Gauss", jPanel1);
 
+        btnSeidel.setText("Calcular");
+        btnSeidel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSeidelActionPerformed(evt);
+            }
+        });
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane3.setViewportView(jTable1);
+
+        btnCrear.setText("Crear matriz");
+        btnCrear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrearActionPerformed(evt);
+            }
+        });
+
+        lblSize.setText("Tamaño de la matriz (máximo 50)");
+
+        spnSize.setModel(new javax.swing.SpinnerNumberModel(3, 1, 50, 1));
+
+        javax.swing.GroupLayout pnlInputsLayout = new javax.swing.GroupLayout(pnlInputs);
+        pnlInputs.setLayout(pnlInputsLayout);
+        pnlInputsLayout.setHorizontalGroup(
+            pnlInputsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        pnlInputsLayout.setVerticalGroup(
+            pnlInputsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout pnlInputssLayout = new javax.swing.GroupLayout(pnlInputss);
+        pnlInputss.setLayout(pnlInputssLayout);
+        pnlInputssLayout.setHorizontalGroup(
+            pnlInputssLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 500, Short.MAX_VALUE)
+        );
+        pnlInputssLayout.setVerticalGroup(
+            pnlInputssLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 200, Short.MAX_VALUE)
+        );
+
+        scrlInputs.setViewportView(pnlInputss);
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel7Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel7Layout.createSequentialGroup()
+                                        .addGap(665, 665, 665)
+                                        .addComponent(pnlInputs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel7Layout.createSequentialGroup()
+                                        .addComponent(lblSize)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(spnSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnCrear))
+                                    .addComponent(scrlInputs, javax.swing.GroupLayout.PREFERRED_SIZE, 512, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel7Layout.createSequentialGroup()
+                                .addGap(196, 196, 196)
+                                .addComponent(btnSeidel)))
+                        .addGap(0, 140, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addContainerGap())
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCrear)
+                    .addComponent(spnSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblSize))
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(scrlInputs, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnSeidel))
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGap(241, 241, 241)
+                        .addComponent(pnlInputs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(104, 104, 104))
+        );
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Método de Gauss Seidel", jPanel5);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -366,10 +552,7 @@ public class FrmVista extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jTabbedPane1)
-                .addContainerGap())
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         pack();
@@ -378,6 +561,309 @@ public class FrmVista extends javax.swing.JFrame {
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
+
+    private void btnCalcularJordanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalcularJordanActionPerformed
+        double[][] matriz = new double[3][4];
+    
+        matriz[0][0] = Double.parseDouble(jTextField13.getText());
+        matriz[0][1] = Double.parseDouble(jTextField14.getText());
+        matriz[0][2] = Double.parseDouble(jTextField15.getText());
+        matriz[0][3] = Double.parseDouble(jTextField16.getText());
+
+        matriz[1][0] = Double.parseDouble(jTextField17.getText());
+        matriz[1][1] = Double.parseDouble(jTextField18.getText());
+        matriz[1][2] = Double.parseDouble(jTextField19.getText());
+    matriz[1][3] = Double.parseDouble(jTextField20.getText());
+
+    matriz[2][0] = Double.parseDouble(jTextField21.getText());
+    matriz[2][1] = Double.parseDouble(jTextField22.getText());
+    matriz[2][2] = Double.parseDouble(jTextField23.getText());
+    matriz[2][3] = Double.parseDouble(jTextField24.getText());
+
+    ArrayList<double[][]> pasos = new ArrayList<>();
+    ArrayList<String> descripciones = new ArrayList<>();
+    pasos.add(clonarMatriz(matriz));
+    descripciones.add("Matriz inicial");
+
+    int n = 3;
+
+    for (int i = 0; i < n; i++) {
+        double pivote = matriz[i][i];
+        if (pivote == 0) {
+            JOptionPane.showMessageDialog(this, "Pivote cero, no se puede continuar");
+            return;
+        }
+        for (int j = 0; j < n + 1; j++) {
+            matriz[i][j] /= pivote;
+        }
+        pasos.add(clonarMatriz(matriz));
+        descripciones.add("Se divide la fila " + (i + 1) + " por el pivote " + pivote);
+
+        for (int k = 0; k < n; k++) {
+            if (k != i) {
+                double factor = matriz[k][i];
+                for (int j = 0; j < n + 1; j++) {
+                    matriz[k][j] -= factor * matriz[i][j];
+                }
+                pasos.add(clonarMatriz(matriz));
+                descripciones.add("Se hace 0 en fila " + (k + 1) + " usando fila " + (i + 1));
+            }
+        }
+    }
+
+    mostrarPasos(pasos, descripciones);
+}  
+
+private double[][] clonarMatriz(double[][] original) {
+    double[][] copia = new double[original.length][original[0].length];
+    for (int i = 0; i < original.length; i++) {
+        System.arraycopy(original[i], 0, copia[i], 0, original[i].length);
+    }
+    return copia;
+}
+
+private void mostrarPasos(ArrayList<double[][]> pasos, ArrayList<String> descripciones) {
+    DefaultTableModel model = new DefaultTableModel();
+    model.addColumn("X1");
+    model.addColumn("X2");
+    model.addColumn("X3");
+    model.addColumn("B");
+
+    tblJordan.setModel(model);
+
+    for (int p = 0; p < pasos.size(); p++) {
+        model.addRow(new Object[]{"", "", "", ""});
+        model.addRow(new Object[]{"Paso " + p + ": " + descripciones.get(p), "", "", ""});
+        model.addRow(new Object[]{"", "", "", ""});
+        for (int i = 0; i < 3; i++) {
+            model.addRow(new Object[]{
+                String.format("%.4f", pasos.get(p)[i][0]),
+                String.format("%.4f", pasos.get(p)[i][1]),
+                String.format("%.4f", pasos.get(p)[i][2]),
+                String.format("%.4f", pasos.get(p)[i][3])
+            });
+        }
+        model.addRow(new Object[]{"----------------", "----------------", "----------------", "----------------"});
+    }
+
+    tblJordan.setModel(model);
+    }//GEN-LAST:event_btnCalcularJordanActionPerformed
+
+    private void btnCalcular1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalcular1ActionPerformed
+        double[][] A = new double[3][4];
+
+        A[0][0] = Double.parseDouble(jTextField1.getText());
+            A[0][1] = Double.parseDouble(jTextField2.getText());
+        A[0][2] = Double.parseDouble(jTextField3.getText());
+        A[0][3] = Double.parseDouble(jTextField4.getText());
+
+        A[1][0] = Double.parseDouble(jTextField5.getText());
+        A[1][1] = Double.parseDouble(jTextField6.getText());
+        A[1][2] = Double.parseDouble(jTextField7.getText());
+        A[1][3] = Double.parseDouble(jTextField8.getText());
+    
+        A[2][0] = Double.parseDouble(jTextField9.getText());
+        A[2][1] = Double.parseDouble(jTextField10.getText());
+        A[2][2] = Double.parseDouble(jTextField11.getText());
+        A[2][3] = Double.parseDouble(jTextField12.getText());
+
+        ArrayList<double[][]> pasos = new ArrayList<>();
+        ArrayList<String> descripciones = new ArrayList<>();
+        pasos.add(clonar(A));
+        descripciones.add("Matriz inicial");
+        int n = 3;
+
+
+        for (int k = 0; k < n - 1; k++) {
+
+            int max = k;
+        
+            for (int i = k + 1; i < n; i++) {
+                if (Math.abs(A[i][k]) > Math.abs(A[max][k])) {
+                    max = i;
+            }
+            }
+            if (max != k) {
+                double[] temp = A[k];
+                A[k] = A[max];
+                A[max] = temp;
+                pasos.add(clonar(A));
+                    descripciones.add("Intercambio fila " + (k + 1) + " con fila " + (max + 1) + " (pivoteo parcial)");
+            }
+
+
+            for (int i = k + 1; i < n; i++) {
+            
+                double factor = A[i][k] / A[k][k];
+            
+                for (int j = k; j < n + 1; j++) {
+                    A[i][j] -= factor * A[k][j];
+                }
+                pasos.add(clonar(A));
+                descripciones.add("Eliminación: fila " + (i + 1) + " = fila " + (i + 1) + " - (" 
+                                   + String.format("%.3f", factor) + ") * fila " + (k + 1));
+            }
+        }
+
+
+        double[] x = new double[n];
+    for (int i = n - 1; i >= 0; i--) {
+        double suma = 0;
+        for (int j = i + 1; j < n; j++) {
+            suma += A[i][j] * x[j];
+        }
+        x[i] = (A[i][n] - suma) / A[i][i];
+    }
+
+    mostrarPasosGauss(pasos, descripciones);
+
+    JOptionPane.showMessageDialog(this, 
+        "Resultados:\nX1 = " + String.format("%.4f", x[0]) + 
+        "\nX2 = " + String.format("%.4f", x[1]) + 
+        "\nX3 = " + String.format("%.4f", x[2]));
+}                                             
+
+private double[][] clonar(double[][] A) {
+    double[][] copia = new double[A.length][A[0].length];
+    for (int i = 0; i < A.length; i++) {
+        System.arraycopy(A[i], 0, copia[i], 0, A[0].length);
+    }
+    return copia;
+}
+
+private void mostrarPasosGauss(ArrayList<double[][]> pasos, ArrayList<String> desc) {
+    DefaultTableModel model = new DefaultTableModel();
+    model.addColumn("X1");
+    model.addColumn("X2");
+    model.addColumn("X3");
+    model.addColumn("B");
+
+    for (int p = 0; p < pasos.size(); p++) {
+        model.addRow(new Object[]{"", "", "", ""});
+        model.addRow(new Object[]{"Paso " + p + ": " + desc.get(p), "", "", ""});
+        model.addRow(new Object[]{"", "", "", ""});
+        for (int i = 0; i < 3; i++) {
+            model.addRow(new Object[]{
+                String.format("%.4f", pasos.get(p)[i][0]),
+                String.format("%.4f", pasos.get(p)[i][1]),
+                String.format("%.4f", pasos.get(p)[i][2]),
+                String.format("%.4f", pasos.get(p)[i][3])
+            });
+        }
+        model.addRow(new Object[]{"----------------", "----------------", "----------------", "----------------"});
+    }
+    tblGauss.setModel(model);
+    }//GEN-LAST:event_btnCalcular1ActionPerformed
+
+    private void btnSeidelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeidelActionPerformed
+    if (tfA == null || tfB == null) {
+    JOptionPane.showMessageDialog(this, "Primero cree la matriz con el botón Crear Matriz.");
+    return;
+}
+
+int n = tfA.length;
+double[][] A = new double[n][n];
+double[] b = new double[n];
+
+try {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            A[i][j] = Double.parseDouble(tfA[i][j].getText().trim());
+        }
+        b[i] = Double.parseDouble(tfB[i].getText().trim());
+    }
+} catch (NumberFormatException ex) {
+    JOptionPane.showMessageDialog(this, "Revise que todos los valores sean numéricos.");
+    return;
+}
+
+for (int i = 0; i < n; i++) {
+    if (A[i][i] == 0.0) {
+        JOptionPane.showMessageDialog(this, "La diagonal contiene cero en la fila " + (i + 1));
+        return;
+    }
+}
+
+int maxIter = 200;
+double tol = 1e-6;
+double[] x = new double[n];
+double[] xPrev = new double[n];
+
+javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel();
+model.addColumn("Iter");
+for (int i = 0; i < n; i++) model.addColumn("X" + (i + 1));
+
+boolean convergió = false;
+
+for (int iter = 1; iter <= maxIter; iter++) {
+    for (int i = 0; i < n; i++) {
+        double suma = b[i];
+        for (int j = 0; j < n; j++) {
+            if (j != i) suma -= A[i][j] * x[j];
+        }
+        x[i] = suma / A[i][i];
+    }
+
+    double err = 0;
+    for (int i = 0; i < n; i++) {
+        err = Math.max(err, Math.abs(x[i] - xPrev[i]));
+        xPrev[i] = x[i];
+    }
+
+    Object[] row = new Object[n + 1];
+    row[0] = iter;
+    for (int i = 0; i < n; i++) row[i + 1] = String.format("%.8f", x[i]);
+    model.addRow(row);
+
+    if (err < tol) {
+        convergió = true;
+        break;
+    }
+}
+
+jTable1.setModel(model);
+
+StringBuilder sb = new StringBuilder("Resultados finales:\n");
+for (int i = 0; i < n; i++) {
+    sb.append("X").append(i + 1).append(" = ").append(String.format("%.4f", x[i])).append("\n");
+}
+sb.append("\nConvergió: ").append(convergió ? "Sí" : "No");
+JOptionPane.showMessageDialog(this, sb.toString(), "Gauss-Seidel", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_btnSeidelActionPerformed
+
+    private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
+        int n = (Integer) spnSize.getValue();
+if (n < 1 || n > 50) {
+    JOptionPane.showMessageDialog(this, "El tamaño debe ser entre 1 y 50.");
+    return;
+}
+
+        pnlInputss.removeAll();
+        pnlInputss.setLayout(new java.awt.GridLayout(n + 1, n + 1, 4, 4));
+
+tfA = new javax.swing.JTextField[n][n];
+tfB = new javax.swing.JTextField[n];
+
+for (int j = 0; j < n; j++) {
+    javax.swing.JLabel lbl = new javax.swing.JLabel("a" + (j + 1), javax.swing.SwingConstants.CENTER);
+    pnlInputss.add(lbl);
+}
+javax.swing.JLabel lblB = new javax.swing.JLabel("b", javax.swing.SwingConstants.CENTER);
+pnlInputss.add(lblB);
+
+for (int i = 0; i < n; i++) {
+    for (int j = 0; j < n; j++) {
+        tfA[i][j] = new javax.swing.JTextField();
+        tfA[i][j].setText(i == j ? "4.0" : "-1.0");
+        pnlInputss.add(tfA[i][j]);
+    }
+    tfB[i] = new javax.swing.JTextField("3.0");
+    pnlInputss.add(tfB[i]);
+}
+
+pnlInputss.revalidate();
+pnlInputss.repaint();
+    }//GEN-LAST:event_btnCrearActionPerformed
 
     /**
      * @param args the command line arguments
@@ -406,6 +892,9 @@ public class FrmVista extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCalcular1;
+    private javax.swing.JButton btnCalcularJordan;
+    private javax.swing.JButton btnCrear;
+    private javax.swing.JButton btnSeidel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -418,11 +907,13 @@ public class FrmVista extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField10;
     private javax.swing.JTextField jTextField11;
@@ -447,5 +938,12 @@ public class FrmVista extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextField9;
+    private javax.swing.JLabel lblSize;
+    private javax.swing.JPanel pnlInputs;
+    private javax.swing.JPanel pnlInputss;
+    private javax.swing.JScrollPane scrlInputs;
+    private javax.swing.JSpinner spnSize;
+    private javax.swing.JTable tblGauss;
+    private javax.swing.JTable tblJordan;
     // End of variables declaration//GEN-END:variables
 }
