@@ -20,6 +20,7 @@ public class FrmVista extends javax.swing.JFrame {
 
     /**
      * Creates new form FrmVista
+     * holamundo
      */
     public FrmVista() {
         initComponents();
