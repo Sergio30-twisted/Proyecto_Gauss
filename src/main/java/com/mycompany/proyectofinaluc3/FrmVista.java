@@ -590,7 +590,7 @@ public class FrmVista extends javax.swing.JFrame {
     for (int i = 0; i < n; i++) {
         double pivote = matriz[i][i];
         if (pivote == 0) {
-            JOptionPane.showMessageDialog(this, "Pivote cero, no se puede continuar");
+            JOptionPane.showMessageDialog(this, ".Pivote cero, no se puede continuar");
             return;
         }
         for (int j = 0; j < n + 1; j++) {
